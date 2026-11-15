@@ -1,0 +1,20 @@
+name: Unpack upload bundle
+on:
+  push:
+    branches: [main]
+    paths: ['bundle.tar.gz']
+permissions:
+  contents: write
+jobs:
+  unpack:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          tar xzf bundle.tar.gz
+          git rm -q bundle.tar.gz
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Add backend, frontend and docs (Phase 1 slice)"
+          git push
